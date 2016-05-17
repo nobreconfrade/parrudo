@@ -3,7 +3,7 @@ ws	{delim}+
 digito	[0-9]
 num	{digito}+(\.{digito}*(E[+-]?{digito}+)?)?
 id ([A-Za-z_-])+ 
-literal \"(.)*\"
+literal \".*\"
 
 %%
 {ws}	{}
@@ -27,7 +27,6 @@ literal \"(.)*\"
 "while" {return TWHILE;}
 "print" {return TPRINT;}
 "read" {return TREAD;}
-\n	{return TFIM;}
 {num}	{yylval = atof(yytext); return TNUM;} 
 {id} {yylval = strcop(yytext); return TID;}
 {literal} {yylval = strcop(yytext); return TLITERAL;}

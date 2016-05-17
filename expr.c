@@ -9,10 +9,9 @@
 
 extern FILE *yyin;
 
-int main()
+int main(int argc, char *argv[])
 {
-	yyin = stdin;
-	printf("Digite uma expressão:");
+	yyin = fopen(argv[],"r");
 	yyparse();
 	return 0;
 }
