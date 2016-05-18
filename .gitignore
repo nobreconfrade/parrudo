@@ -30,3 +30,8 @@
 
 # Debug files
 *.dSYM/
+
+# Parrudo's files 
+*.yy.c
+*.tab.c
+parrudo

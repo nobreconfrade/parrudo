@@ -12,6 +12,13 @@ id ([A-Za-z_-])+
 "*"	{return TMUL;}
 "/"	{return TDIV;}
 
+"<" {return TMENOR;}
+"<=" {return TMENORIG;}
+">" {return TMAIOR;}
+">=" {return TMAIORIG;}
+"==" {return TEQUIV;}
+"!=" {return TNOTEQUIV;}
+
 "("	{return TAPAR;}
 ")"	{return TFPAR;}
 "{" {return TACHA;}
@@ -19,6 +26,10 @@ id ([A-Za-z_-])+
 
 "," {return TVIRG;}
 ";" {return TPONTVIRG;}
+
+"&&" {return TE;}
+"||" {return TOU;}
+"!" {return TNOT;}
 
 "=" {return TIGUAL;}
 
@@ -34,5 +45,5 @@ id ([A-Za-z_-])+
 "read" {return TREAD;}
 
 {num}	{yylval = atof(yytext); return TNUM;} 
-{id} {strcpy(yylval.id,yytext);return TID;}
-{literal} {strcpy(yylval.literal,yytext);return TLITERAL;}
+{id} {return TID;}
+{literal} {return TLITERAL;}

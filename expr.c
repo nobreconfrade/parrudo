@@ -9,9 +9,9 @@
 
 extern FILE *yyin;
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-	yyin = fopen(argv[],"r");
+	yyin = fopen(argv[1],"r");
 	yyparse();
 	return 0;
 }
