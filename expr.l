@@ -1,9 +1,9 @@
 delim	[ \t]
 ws	{delim}+
 digito	[0-9]
+literal \".*\"
 num	{digito}+(\.{digito}*(E[+-]?{digito}+)?)?
 id ([A-Za-z_-])+ 
-literal \".*\"
 
 %%
 {ws}	{}
@@ -11,22 +11,28 @@ literal \".*\"
 "-"	{return TSUB;}
 "*"	{return TMUL;}
 "/"	{return TDIV;}
+
 "("	{return TAPAR;}
 ")"	{return TFPAR;}
 "{" {return TACHA;}
 "}" {return TFCHA;}
+
 "," {return TVIRG;}
-"=" {return TIGUAL;}
 ";" {return TPONTVIRG;}
+
+"=" {return TIGUAL;}
+
 "void" {return TVOID;}
 "String" {return TSTRING;}
 "int" {return TINT;}
+
 "return" {return TRETURN;}
 "if" {return TIF;}
 "else" {return TELSE;}
 "while" {return TWHILE;}
 "print" {return TPRINT;}
 "read" {return TREAD;}
+
 {num}	{yylval = atof(yytext); return TNUM;} 
-{id} {yylval = strcop(yytext); return TID;}
-{literal} {yylval = strcop(yytext); return TLITERAL;}
+{id} {strcpy(yylval.id,yytext);return TID;}
+{literal} {strcpy(yylval.literal,yytext);return TLITERAL;}
