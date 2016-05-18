@@ -57,7 +57,7 @@ Comando: CmdSe
 	| ChamadaFuncao
 	| Retorno
 	;
-Retorno: TRETURN ExpressaoAritmetica
+Retorno: TRETURN ExpressaoAritmetica TPONTVIRG
 	;
 CmdSe: TIF TAPAR ExpressaoLogica TFPAR Bloco
 	| TIF TAPAR ExpressaoLogica TFPAR Bloco TELSE Bloco

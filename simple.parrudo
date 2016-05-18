@@ -1,0 +1,10 @@
+int notmain(){
+	return 0;
+}
+{
+	int a;
+	if (a<=10 || a>=11){
+		print("Bom dia!");
+	}
+	return 0;
+}
