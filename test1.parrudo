@@ -1,20 +1,22 @@
-int fat(int n)
 {
-	int f;
+	int a, b;
 	
-	f = 1;
-	while(n>0)
+	print("Valor de A:");
+	read(a);
+	print("Valor de B:");
+	read(b);
+	while (a != b)
 	{
-		f = f * n;
-		n = n - 1;
+		if (a > b)
+		{
+			a = a - b;
+		}
+		if (b > a)
+		{
+			b = b - a;
+		}
 	}
+	print("\nRes=");
+	print(a);
 }
-{
-	int n, x;
-	
-	print("Valor:");
-	read(n);
-	x = fat(n); //Error here
-	print(x);
-}	
 	

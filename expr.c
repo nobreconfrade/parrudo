@@ -5,7 +5,7 @@
 
 	Author: William Pereira
 	
-	An compiler for a strange language
+	A compiler for a strange language
 
 	Compiling commands of the compiler: 
 	bison --verbose expr.y
