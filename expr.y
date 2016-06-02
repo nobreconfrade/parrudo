@@ -1,7 +1,8 @@
 %{
+#include "auxexpr.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define YYSTYPE double
+#define YYSTYPE Atributo
 %}
 
 %token 
