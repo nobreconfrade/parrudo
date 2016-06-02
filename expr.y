@@ -16,8 +16,8 @@ TNUM TID TLITERAL
 
 %%
 
-Programa: ListaFuncoes BlocoPrincipal
-	| BlocoPrincipal
+Programa: ListaFuncoes BlocoPrincipal 
+	| BlocoPrincipal 
 	;
 ListaFuncoes: ListaFuncoes Funcao
 	| Funcao
@@ -57,7 +57,7 @@ Comando: CmdSe
 	| ChamadaFuncao
 	| Retorno
 	;
-Retorno: TRETURN ExpressaoAritmetica
+Retorno: TRETURN ExpressaoAritmetica TPONTVIRG
 	;
 CmdSe: TIF TAPAR ExpressaoLogica TFPAR Bloco
 	| TIF TAPAR ExpressaoLogica TFPAR Bloco TELSE Bloco
@@ -99,6 +99,9 @@ OperadorRelacional: TMENOR
 	| TEQUIV
 	| TNOTEQUIV
 	;
+ChamadaFuncaoAtrib: TID TAPAR ListaParametros TFPAR
+	| TID TAPAR TFPAR
+	;
 ExpressaoAritmetica: ExpressaoAritmetica TADD TermoAritmetica {$$ = $1 + $3;}
 	| ExpressaoAritmetica TSUB TermoAritmetica {$$ = $1 - $3;}
 	| TermoAritmetica
@@ -109,7 +112,8 @@ TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {$$ = $1 * $3;}
 	;
 FatorAritmetica: TNUM 
 	| TAPAR ExpressaoAritmetica TFPAR {$$ = $2;}
-	| TID	
+	| TID 
+	| ChamadaFuncaoAtrib
 	;
 %%
 #include "lex.yy.c"

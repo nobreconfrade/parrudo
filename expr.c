@@ -1,6 +1,13 @@
 #include <stdio.h>
 
 /*
+	PRAISE THE SUN 
+
+	Author: William Pereira
+	
+	A compiler for a strange language
+
+	Compiling commands of the compiler: 
 	bison --verbose expr.y
 	gcc expr.c exp.tab.c -o nome
 	flex expr.l

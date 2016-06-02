@@ -47,3 +47,4 @@ id ([A-Za-z_-])+
 {num}	{yylval = atof(yytext); return TNUM;} 
 {id} {return TID;}
 {literal} {return TLITERAL;}
+. {printf("Erro léxico\n");}
