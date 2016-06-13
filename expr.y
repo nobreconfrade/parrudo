@@ -17,8 +17,16 @@ TNUM TID TLITERAL
 
 %%
 
-Programa: ListaFuncoes BlocoPrincipal 
-	| BlocoPrincipal 
+Programa: ListaFuncoes BlocoPrincipal{
+		ImprimirInstrucoes();
+		SalvarBytecode();
+		exit(0);
+	}
+	| BlocoPrincipal{
+		ImprimirInstrucoes();
+		SalvarBytecode();
+		exit(0);
+	} 
 	;
 ListaFuncoes: ListaFuncoes Funcao
 	| Funcao
@@ -37,13 +45,13 @@ Parametro: Tipo TID
 BlocoPrincipal: TACHA Declaracao ListaCmd TFCHA
 	| TACHA ListaCmd TFCHA
 	;
-Declaracao: Tipo ListaId TPONTVIRG
+Declaracao: Tipo ListaId TPONTVIRG {}
 	;
 Tipo: TINT
 	| TSTRING
 	;
-ListaId: ListaId TVIRG TID
-	| TID
+ListaId: ListaId TVIRG TID {insereNoFim(&$$.IDlista, $3.id)}
+	| TID {InitLista(&$$.IDlista, sizeof(NaLista)); insereNoFim(&$$.IDlista, $1.id);}
 	;
 Bloco: TACHA ListaCmd TFCHA
 	;
