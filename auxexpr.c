@@ -1,7 +1,8 @@
 #include "auxexpr.h"
 
-int CompararID(void *id1, void *id2)
+int CompararID(void *id1, void *id2){
 	return strcmp(((NaLista*)id1)->id,((NaLista*)id2)->id);
+}
 
 void InsereNaTabela (Lista *IDlista, int tipo){
 	if(listaVazia(&IDtabela))
@@ -73,7 +74,7 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 void ImprimeInstrucoes(){
 	InicializaBytecode();
 	int i;
-	for (i = 0; i < 64; i++){
+	for (i = 0; i < 256; i++){
 		char instNome[270];
 		pegaNomeInstrucao(codigo[i], instNome);
 		EscreveBitecode(instNome);
@@ -91,8 +92,14 @@ void InicializaBytecode(){
 		".end method\n\n"
 		".method public static main([Ljava/lang/String;)V\n"
 		"\t.limit stack  10\n"
-		"\t.limit locals 10\n")
-	}
+		"\t.limit locals 10\n");
+}
+
+void salvarArquivoBytecode(){
+	EscreveBitecode("\treturn\n.end method\n");
+	FILE* arquivoBytecode = fopen("Bytecode,j","ab+");
+	fputs(bufferSaida, arquivoBytecode);
+	printf("%s", bufferSaida); 
 }
 
 void EscreveBitecode(const char *bytecode){
@@ -138,4 +145,3 @@ void empurra(int instrucao, Atributo param){
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-

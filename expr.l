@@ -44,7 +44,7 @@ id ([A-Za-z_-])+
 "print" {return TPRINT;}
 "read" {return TREAD;}
 
-{num}	{yylval = atof(yytext); return TNUM;} 
+{num} {return TNUM;} 
 {id} {return TID;}
 {literal} {return TLITERAL;}
 

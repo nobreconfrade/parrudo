@@ -45,12 +45,12 @@ Parametro: Tipo TID
 BlocoPrincipal: TACHA Declaracao ListaCmd TFCHA
 	| TACHA ListaCmd TFCHA
 	;
-Declaracao: Tipo ListaId TPONTVIRG {}
+Declaracao: Tipo ListaId TPONTVIRG
 	;
 Tipo: TINT
 	| TSTRING
 	;
-ListaId: ListaId TVIRG TID {insereNoFim(&$$.IDlista, $3.id)}
+ListaId: ListaId TVIRG TID {insereNoFim(&$$.IDlista, $3.id);}
 	| TID {InitLista(&$$.IDlista, sizeof(NaLista)); insereNoFim(&$$.IDlista, $1.id);}
 	;
 Bloco: TACHA ListaCmd TFCHA
@@ -73,8 +73,8 @@ CmdSe: TIF TAPAR ExpressaoLogica TFPAR Bloco
 	;
 CmdEnquanto: TWHILE TAPAR ExpressaoLogica TFPAR Bloco
 	;
-CmdAtrib: TID TIGUAL ExpressaoAritmetica TPONTVIRG
-	| TID TIGUAL TLITERAL TPONTVIRG
+CmdAtrib: TID TIGUAL ExpressaoAritmetica TPONTVIRG {empurra(ISTORE,$1);}
+	| TID TIGUAL TLITERAL TPONTVIRG	{empurra(ISTORE,$1);}
 	;
 CmdEscrita: TPRINT TAPAR ExpressaoAritmetica TFPAR TPONTVIRG
 	| TPRINT TAPAR TLITERAL TFPAR TPONTVIRG
@@ -111,17 +111,17 @@ OperadorRelacional: TMENOR
 ChamadaFuncaoAtrib: TID TAPAR ListaParametros TFPAR
 	| TID TAPAR TFPAR
 	;
-ExpressaoAritmetica: ExpressaoAritmetica TADD TermoAritmetica {$$ = $1 + $3;}
-	| ExpressaoAritmetica TSUB TermoAritmetica {$$ = $1 - $3;}
+ExpressaoAritmetica: ExpressaoAritmetica TADD TermoAritmetica {empurra(IADD,$1);}
+	| ExpressaoAritmetica TSUB TermoAritmetica {empurra(ISUB, $1);}
 	| TermoAritmetica
 	;
-TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {$$ = $1 * $3;}
-	| TermoAritmetica TDIV FatorAritmetica {$$ = $1 / $3;}
+TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {empurra(TMUL,$1);}
+	| TermoAritmetica TDIV FatorAritmetica {empurra(TDIV,$1);}
 	| FatorAritmetica
 	;
-FatorAritmetica: TNUM 
-	| TAPAR ExpressaoAritmetica TFPAR {$$ = $2;}
-	| TID 
+FatorAritmetica: TNUM {empurra(BIPUSH,$1);}
+	| TAPAR ExpressaoAritmetica TFPAR 
+	| TID {empurra(ILOAD,$1);}
 	| ChamadaFuncaoAtrib
 	;
 %%

@@ -1,7 +1,22 @@
-#define INF 0xFFFF
-
 #include "lista.h"
 #include <stdio.h>
+
+
+// DEFINES
+#define INF       0xFFFF
+#define BIPUSH    0x0000
+#define ICONST    0x0001
+#define LDC       0x0002
+#define ILOAD     0x0003
+#define ISTORE    0x0004
+#define PRINT     0x0005
+#define IADD      0x0006
+#define ISUB      0x0007
+#define IMUL      0x0008
+#define IDIV      0x0009
+#define GETSTATIC 0x0010
+
+//STRUCTS
 typedef struct{
     char id[20];
     int tipo;
@@ -20,5 +35,9 @@ typedef struct {
 	char str[256];
 	int instrucao;
 }Instrucao;
+
+//VARIAVEIS
 Instrucao codigo[256];
+char bufferSaida[2000];
 int proxInstrucao = 0;
+Lista IDtabela;
