@@ -1,6 +1,6 @@
 #include "lista.h"
 #include <stdio.h>
-
+#include <string.h>
 
 // DEFINES
 #define INF       0xFFFF
@@ -48,5 +48,5 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome);
 void ImprimeInstrucoes();
 void InicializaBytecode();
 void salvarArquivoBytecode();
-void EscreveBitecode(const char *bytecode);
+void EscreveBytecode(const char *bytecode);
 void empurra(int instrucao, Atributo param);

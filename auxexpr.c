@@ -34,7 +34,7 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 			if (codigo.para1 =! INF)
 				sprintf(str, "\tbipush %d\n", codigo.para1);
 			else
-				sprintf(str, "\tbipush %d\n", codigo.str);
+				sprintf(str, "\tbipush %s\n", codigo.str);
 			break;
 		case ISTORE:
 			sprintf(str, "\tistore %d\n", codigo.para1);
@@ -97,7 +97,7 @@ void InicializaBytecode(){
 
 void salvarArquivoBytecode(){
 	EscreveBytecode("\treturn\n.end method\n");
-	FILE* arquivoBytecode = fopen("Bytecode,j","ab+");
+	FILE* arquivoBytecode = fopen("Bytecode.j","w");
 	fputs(bufferSaida, arquivoBytecode);
 	printf("%s", bufferSaida); 
 }
