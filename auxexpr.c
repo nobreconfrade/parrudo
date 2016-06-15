@@ -16,7 +16,7 @@ void InsereNaTabela (Lista *IDlista, int tipo){
 			static int i = 0; //static indica que esta variavel sera inicializada uma vez nesta execução
 			aux.pos = ++i;
 			aux.tipo = tipo;
-			insereNoFim(&IDlista, &aux);
+			insereNoFim(IDlista, &aux);
 		}
 	}
 }
@@ -77,13 +77,13 @@ void ImprimeInstrucoes(){
 	for (i = 0; i < 256; i++){
 		char instNome[270];
 		pegaNomeInstrucao(codigo[i], instNome);
-		EscreveBitecode(instNome);
+		EscreveBytecode(instNome);
 
 	}
 }
 
 void InicializaBytecode(){
-	EscreveBitecode(".class public Bytecode\n"
+	EscreveBytecode(".class public Bytecode\n"
 		".super java/lang/Object\n\n"
 		".method public <init>()V\n"
 		"\taload_0\n\n"
@@ -96,13 +96,13 @@ void InicializaBytecode(){
 }
 
 void salvarArquivoBytecode(){
-	EscreveBitecode("\treturn\n.end method\n");
+	EscreveBytecode("\treturn\n.end method\n");
 	FILE* arquivoBytecode = fopen("Bytecode,j","ab+");
 	fputs(bufferSaida, arquivoBytecode);
 	printf("%s", bufferSaida); 
 }
 
-void EscreveBitecode(const char *bytecode){
+void EscreveBytecode(const char *bytecode){
 	sprintf(bufferSaida + strlen(bufferSaida), "%s", bytecode);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////

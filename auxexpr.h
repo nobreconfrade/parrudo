@@ -39,5 +39,14 @@ typedef struct {
 //VARIAVEIS
 Instrucao codigo[256];
 char bufferSaida[2000];
-int proxInstrucao = 0;
+int proxInstrucao;
 Lista IDtabela;
+
+//FUNCOES
+void InsereNaTabela (Lista *IDlista, int tipo);
+void pegaNomeInstrucao(Instrucao codigo, char *instNome);
+void ImprimeInstrucoes();
+void InicializaBytecode();
+void salvarArquivoBytecode();
+void EscreveBitecode(const char *bytecode);
+void empurra(int instrucao, Atributo param);

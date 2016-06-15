@@ -18,13 +18,13 @@ TNUM TID TLITERAL
 %%
 
 Programa: ListaFuncoes BlocoPrincipal{
-		ImprimirInstrucoes();
-		SalvarBytecode();
+		ImprimeInstrucoes();
+		salvarArquivoBytecode();
 		exit(0);
 	}
 	| BlocoPrincipal{
-		ImprimirInstrucoes();
-		SalvarBytecode();
+		ImprimeInstrucoes();
+		salvarArquivoBytecode();
 		exit(0);
 	} 
 	;
