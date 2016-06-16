@@ -4,6 +4,8 @@
 
 // DEFINES
 #define INF       0xFFFF
+#define INT       0x2000
+#define STRING    0x2001
 #define BIPUSH    0x0000
 #define ICONST    0x0001
 #define LDC       0x0002

@@ -61,12 +61,13 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 			sprintf(str, "\tgetstatic java/lang/System/out Ljava/io/PrintStream;\n");
 			break;
 		case PRINT:
-			if (codigo.para1 != INF){
-				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(I)V\n");
-				printf("----------------------------%d---------------------------\n",codigo.para1);
+			if (codigo.para2 == STRING){
+				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
+				// printf("----------------------------%d---------------------------\n",codigo.para1);
 			}
 			else
-				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
+				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(I)V\n");
+			// printf("----------------------------%d---------------------------\n",codigo.para2);
 			break;
 		default:
 			printf("Well, this is embarrassing...\n");
@@ -80,7 +81,8 @@ void ImprimeInstrucoes(){
 	int i;
 	for (i = 0; i < proxInstrucao; i++){
 		char instNome[270];
-		// printf("_____%d______\n",codigo[i].para1);
+		// printf("_____%d______\n",codigo[i].para2);
+		printf("%s\n",instNome);
 		pegaNomeInstrucao(codigo[i], instNome);
 		EscreveBytecode(instNome);
 
@@ -147,7 +149,8 @@ void empurra(int instrucao, Atributo param){
 
 			}
 			codigo[proxInstrucao].para1 = param.num;
-			// printf("\n\n\n\n%d\n\n\n\n",codigo[proxInstrucao].para1);
+			codigo[proxInstrucao].para2 = INT;
+			// printf("\n\n\n\n%d\n\n\n\n",codigo[proxInstrucao].para2);
 			break;
 		case ILOAD:
 			strcpy(aux.id, param.id);
@@ -162,12 +165,18 @@ void empurra(int instrucao, Atributo param){
 		case LDC:
 			strcpy(codigo[proxInstrucao].str, param.literal);
 			codigo[proxInstrucao].para1 = INF;
+			codigo[proxInstrucao].para2 = STRING;
 			break;
 		case PRINT:
+			if(codigo[proxInstrucao-1].para2 == STRING)
+				codigo[proxInstrucao].para2 = STRING;
+			else
+				codigo[proxInstrucao].para1 = 0;
+				/*
 			if(codigo[proxInstrucao-1].para1 == INF)
 				codigo[proxInstrucao].para1 = INF;
 			else
-				codigo[proxInstrucao].para1 = 0;
+				codigo[proxInstrucao].para1 = 0;*/
 			break;
 		default: // expressoes aritmeticas caem aqui!
 			break;
