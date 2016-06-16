@@ -42,10 +42,13 @@ DeclParametros: DeclParametros TVIRG Parametro
 	;
 Parametro: Tipo TID
 	;
-BlocoPrincipal: TACHA Declaracao ListaCmd TFCHA
+BlocoPrincipal: TACHA Declaracoes ListaCmd TFCHA
 	| TACHA ListaCmd TFCHA
 	;
-Declaracao: Tipo ListaId TPONTVIRG
+Declaracoes: Declaracoes Declaracao
+	| Declaracao
+	;
+Declaracao: Tipo ListaId TPONTVIRG {InsereNaTabela(&$2.IDlista, $1.tipo);}
 	;
 Tipo: TINT
 	| TSTRING
@@ -74,10 +77,16 @@ CmdSe: TIF TAPAR ExpressaoLogica TFPAR Bloco
 CmdEnquanto: TWHILE TAPAR ExpressaoLogica TFPAR Bloco
 	;
 CmdAtrib: TID TIGUAL ExpressaoAritmetica TPONTVIRG {empurra(ISTORE,$1);}
-	| TID TIGUAL TLITERAL TPONTVIRG	{empurra(ISTORE,$1);}
+	| TID TIGUAL String TPONTVIRG	{empurra(ISTORE,$1);}
 	;
-CmdEscrita: TPRINT TAPAR ExpressaoAritmetica TFPAR TPONTVIRG
-	| TPRINT TAPAR TLITERAL TFPAR TPONTVIRG
+CmdEscrita: TPRINT Flag_Escrita1 TAPAR ExpressaoAritmetica TFPAR Flag_Escrita2 TPONTVIRG
+	| TPRINT Flag_Escrita1 TAPAR String TFPAR Flag_Escrita2 TPONTVIRG
+	;
+String: TLITERAL {empurra(LDC,$1);}
+	;
+Flag_Escrita1: {empurra(GETSTATIC,$$);}
+	; 
+Flag_Escrita2: {empurra(PRINT,$$);}
 	;
 CmdLeitura: TREAD TAPAR TID TFPAR TPONTVIRG
 	;

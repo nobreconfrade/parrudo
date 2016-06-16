@@ -37,7 +37,7 @@ typedef struct {
 }Instrucao;
 
 //VARIAVEIS
-Instrucao codigo[256];
+Instrucao codigo[64];
 char bufferSaida[2000];
 int proxInstrucao;
 Lista IDtabela;

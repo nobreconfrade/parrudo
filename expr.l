@@ -44,8 +44,8 @@ id ([A-Za-z_-])+
 "print" {return TPRINT;}
 "read" {return TREAD;}
 
-{num} {return TNUM;} 
-{id} {return TID;}
-{literal} {return TLITERAL;}
+{num} {yylval.num = atof(yytext); return TNUM;} 
+{id} {strcpy(yylval.id,yytext); return TID;}
+{literal} {strcpy(yylval.literal,yytext); return TLITERAL;}
 
 . {printf("Erro léxico\n");}

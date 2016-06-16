@@ -16,8 +16,10 @@ void InsereNaTabela (Lista *IDlista, int tipo){
 			static int i = 0; //static indica que esta variavel sera inicializada uma vez nesta execução
 			aux.pos = ++i;
 			aux.tipo = tipo;
-			insereNoFim(IDlista, &aux);
+			insereNoFim(&IDtabela, &aux);
+			// printf("-------------------------------------------------------\n");
 		}
+			// printf("-------------------------------------------------------\n");
 	}
 }
 
@@ -31,10 +33,11 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 			sprintf(str, "\tbipush %d\n", codigo.para1);
 			break;
 		case LDC:
-			if (codigo.para1 =! INF)
-				sprintf(str, "\tbipush %d\n", codigo.para1);
+			if (codigo.para1 != INF)
+				sprintf(str, "\tldc %d\n", codigo.para1);
 			else
-				sprintf(str, "\tbipush %s\n", codigo.str);
+				sprintf(str, "\tldc %s\n", codigo.str);
+			// printf("----------------------------%d---------------------------\n",codigo.para1);
 			break;
 		case ISTORE:
 			sprintf(str, "\tistore %d\n", codigo.para1);
@@ -60,9 +63,10 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 		case PRINT:
 			if (codigo.para1 != INF){
 				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(I)V\n");
-			}else{
-				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
+				printf("----------------------------%d---------------------------\n",codigo.para1);
 			}
+			else
+				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
 			break;
 		default:
 			printf("Well, this is embarrassing...\n");
@@ -74,8 +78,9 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 void ImprimeInstrucoes(){
 	InicializaBytecode();
 	int i;
-	for (i = 0; i < 256; i++){
+	for (i = 0; i < proxInstrucao; i++){
 		char instNome[270];
+		// printf("_____%d______\n",codigo[i].para1);
 		pegaNomeInstrucao(codigo[i], instNome);
 		EscreveBytecode(instNome);
 
@@ -96,6 +101,7 @@ void InicializaBytecode(){
 }
 
 void salvarArquivoBytecode(){
+	// ImprimeTabela(&IDtabela);
 	EscreveBytecode("\treturn\n.end method\n");
 	FILE* arquivoBytecode = fopen("Bytecode.j","w");
 	fputs(bufferSaida, arquivoBytecode);
@@ -105,17 +111,43 @@ void salvarArquivoBytecode(){
 void EscreveBytecode(const char *bytecode){
 	sprintf(bufferSaida + strlen(bufferSaida), "%s", bytecode);
 }
+
+/*void ImprimeTabela(void * id){
+	NaLista* table = (NaLista*)id;
+	printf("(%i) %s:%s\n", table->pos, table->id, pegaTipoInstrucao(table->tipo));	
+}
+const char* pegaTipoInstrucao(const int type)
+{
+	switch(type)
+	{
+		case INT:
+			return "INT";
+			break;
+		case STRING:
+			return "STRING";
+			break;
+		default:
+			return "NOPE";
+			break;
+	}
+}*/
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void empurra(int instrucao, Atributo param){
 	NaLista aux;
 	switch (instrucao){
 		case BIPUSH:
-			if(param.num >= 0 && param.num < 6)
+			if(param.num >= 0 && param.num < 6){
 				instrucao = ICONST;
-			else if(param.num < -128 && param.num > 127)
+				// printf("-----------------------------------------  %d  -----------------------------------------\n",param.num);
+			}
+			else if(param.num < -128 || param.num > 127){
 				instrucao = LDC;
+				// printf("-------------------------------------------------------\n");
+
+			}
 			codigo[proxInstrucao].para1 = param.num;
+			// printf("\n\n\n\n%d\n\n\n\n",codigo[proxInstrucao].para1);
 			break;
 		case ILOAD:
 			strcpy(aux.id, param.id);
