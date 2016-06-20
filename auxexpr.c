@@ -82,7 +82,7 @@ void ImprimeInstrucoes(){
 	for (i = 0; i < proxInstrucao; i++){
 		char instNome[270];
 		// printf("_____%d______\n",codigo[i].para2);
-		printf("%s\n",instNome);
+		// printf("%s\n",instNome);
 		pegaNomeInstrucao(codigo[i], instNome);
 		EscreveBytecode(instNome);
 

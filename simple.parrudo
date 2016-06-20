@@ -1,6 +1,10 @@
 {
-	int a,b;
+	int a,b,,d;
 	a = 130;
 	b = 20;
+	c = 2;
+	d = c+a+b;
 	print(a + b);
+	print(d);
+	print("oizao zao zao zao aoz");
 }

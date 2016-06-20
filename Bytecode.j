@@ -15,10 +15,24 @@
 	istore 1
 	bipush 20
 	istore 2
+	iconst_2
+	istore 3
+	iload 3
+	iload 1
+	iadd
+	iload 2
+	iadd
+	istore 4
 	getstatic java/lang/System/out Ljava/io/PrintStream;
 	iload 1
 	iload 2
 	iadd
 	invokevirtual java/io/PrintStream/println(I)V
+	getstatic java/lang/System/out Ljava/io/PrintStream;
+	iload 4
+	invokevirtual java/io/PrintStream/println(I)V
+	getstatic java/lang/System/out Ljava/io/PrintStream;
+	ldc "oizao zao zao zao aoz"
+	invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 	return
 .end method
