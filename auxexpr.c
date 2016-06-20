@@ -150,7 +150,7 @@ void empurra(int instrucao, Atributo param){
 			}
 			codigo[proxInstrucao].para1 = param.num;
 			codigo[proxInstrucao].para2 = INT;
-			// printf("\n\n\n\n%d\n\n\n\n",codigo[proxInstrucao].para2);
+			// printf("\n\n\n\n%d\n\n\n\n",codigo[proxInstrucao].para1); ou para2
 			break;
 		case ILOAD:
 			strcpy(aux.id, param.id);

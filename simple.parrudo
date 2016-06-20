@@ -1,10 +1,12 @@
 {
-	int a,b,c,d;
+	int a,b,d;
+	String c;
 	a = 130;
 	b = 20;
-	c = 2;
-	d = c+a+b;
+	c = "bom dia";
+	d = a+b;
 	print(a + b);
 	print(d);
 	print("oizao zao zao zao aoz");
+	print(c);
 }

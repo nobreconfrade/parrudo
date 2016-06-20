@@ -37,3 +37,5 @@
 parrudo
 executavel
 jasmin-2.4/
+*.class
+*.j
