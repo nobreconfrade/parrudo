@@ -83,6 +83,7 @@ CmdEscrita: TPRINT Flag_Escrita1 TAPAR ExpressaoAritmetica TFPAR Flag_Escrita2 T
 	| TPRINT Flag_Escrita1 TAPAR String TFPAR Flag_Escrita2 TPONTVIRG
 	;
 String: TLITERAL {empurra(LDC,$1);}
+	| TID
 	;
 Flag_Escrita1: {empurra(GETSTATIC,$$);}
 	; 
@@ -130,7 +131,7 @@ TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {empurra(TMUL,$1);}
 	;
 FatorAritmetica: TNUM {empurra(BIPUSH,$1);}
 	| TAPAR ExpressaoAritmetica TFPAR 
-	| TID {empurra(ILOAD,$1);}
+	| TID {$$.TIPO = empurra(ILOAD,$1);}
 	| ChamadaFuncaoAtrib
 	;
 %%

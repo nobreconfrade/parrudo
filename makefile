@@ -7,10 +7,6 @@ run:
 	make
 	./parrudo simple.parrudo
 
-runb:
-	rm Bytecode.j
-	make run
-
 rm:
 	rm Croissant genscanner.c genparser.c Bytecode.j Bytecode.class
 	rm -rf ./jasmin-2.4
@@ -25,5 +21,5 @@ jasminrun:
 	java Bytecode
 
 compile:
-	make runb
+	make run
 	make jasminrun

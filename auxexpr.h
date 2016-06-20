@@ -17,6 +17,9 @@
 #define IMUL      0x0008
 #define IDIV      0x0009
 #define GETSTATIC 0x0010
+#define ALOAD     0x0011
+#define ASTORE    0x0012
+
 
 //STRUCTS
 typedef struct{
