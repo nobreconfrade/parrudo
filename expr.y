@@ -77,7 +77,7 @@ CmdSe: TIF TAPAR ExpressaoLogica TFPAR Bloco
 CmdEnquanto: TWHILE TAPAR ExpressaoLogica TFPAR Bloco
 	;
 CmdAtrib: TID TIGUAL ExpressaoAritmetica TPONTVIRG {empurra(ISTORE,$1);}
-	| TID TIGUAL String TPONTVIRG	{empurra(ISTORE,$1);}
+	| TID TIGUAL String TPONTVIRG	{empurra(ASTORE,$1);}
 	;
 CmdEscrita: TPRINT Flag_Escrita1 TAPAR ExpressaoAritmetica TFPAR Flag_Escrita2 TPONTVIRG
 	| TPRINT Flag_Escrita1 TAPAR String TFPAR Flag_Escrita2 TPONTVIRG

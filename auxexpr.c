@@ -42,6 +42,9 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 		case ISTORE:
 			sprintf(str, "\tistore %d\n", codigo.para1);
 			break;
+		case ASTORE:
+			sprintf(str, "\tastore %d\n", codigo.para1);
+			break;
 		case ILOAD:
 			sprintf(str, "\tiload %d\n", codigo.para1);
 			break;
@@ -152,15 +155,18 @@ void empurra(int instrucao, Atributo param){
 			codigo[proxInstrucao].para2 = INT;
 			// printf("\n\n\n\n%d\n\n\n\n",codigo[proxInstrucao].para1); ou para2
 			break;
+		case ISTORE:
 		case ILOAD:
 			strcpy(aux.id, param.id);
 			buscaElemento(&IDtabela, &aux, CompararID);
 			codigo[proxInstrucao].para1 = aux.pos;
-			break;
-		case ISTORE:
+			break;	
+		case ALOAD:
+		case ASTORE:
 			strcpy(aux.id, param.id);
 			buscaElemento(&IDtabela, &aux, CompararID);
 			codigo[proxInstrucao].para1 = aux.pos;
+			codigo[proxInstrucao].para2 = STRING;
 			break;
 		case LDC:
 			strcpy(codigo[proxInstrucao].str, param.literal);
