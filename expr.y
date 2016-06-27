@@ -71,19 +71,29 @@ Comando: CmdSe
 	;
 Retorno: TRETURN ExpressaoAritmetica TPONTVIRG
 	;
-CmdSe: TIF TAPAR ExpressaoLogica TFPAR Bloco
-	| TIF TAPAR ExpressaoLogica TFPAR Bloco TELSE Bloco
+CmdSe: TIF TAPAR ExpressaoLogica TFPAR M_label Bloco{Correcao(&$3.listaV, $5.label);
+													Correcao(&$3.listaF, novoLabel());}
+	| TIF TAPAR ExpressaoLogica TFPAR M_label Bloco N_if TELSE M_label Bloco{
+																	Correcao(&$3.listaV, $5.label); 
+																	Correcao(&$3.listaF, $9.label);
+																	Correcao(&$7.listaV, novoLabel());}
 	;
-CmdEnquanto: TWHILE TAPAR ExpressaoLogica TFPAR Bloco
+CmdEnquanto: TWHILE M_label TAPAR ExpressaoLogica TFPAR M_label Bloco{	empurra(GOTO, $2);
+																		Correcao(&$4.listaV, $6.label);
+																		Correcao(&$4.listaF, novoLabel());}
+	;
+M_label: {$$.label = novoLabel();}
+	;
+N_if:{iniciaListaVF(&$$);
+	empurra(GOTO,$$);}
 	;
 CmdAtrib: TID TIGUAL ExpressaoAritmetica TPONTVIRG {empurra(ISTORE,$1);}
-	| TID TIGUAL String TPONTVIRG	{empurra(ASTORE,$1);}
+	| TID TIGUAL String TPONTVIRG	{empurra(ISTORE,$1);}
 	;
 CmdEscrita: TPRINT Flag_Escrita1 TAPAR ExpressaoAritmetica TFPAR Flag_Escrita2 TPONTVIRG
 	| TPRINT Flag_Escrita1 TAPAR String TFPAR Flag_Escrita2 TPONTVIRG
 	;
 String: TLITERAL {empurra(LDC,$1);}
-	| TID
 	;
 Flag_Escrita1: {empurra(GETSTATIC,$$);}
 	; 
@@ -97,26 +107,33 @@ ChamadaFuncao: TID TAPAR ListaParametros TFPAR TPONTVIRG
 ListaParametros: ListaParametros TVIRG ExpressaoAritmetica
 	| ExpressaoAritmetica
 	;
-ExpressaoLogica: TermoLogico OperadorLogico TermoLogico
-	| TermoLogico
+ExpressaoLogica: TermoLogico TE M_label TermoLogico{iniciaListaVaziaVF(&$$);
+													Correcao(&$1.listaV, $3.label);
+													Junta(&$$.listaF, &$1.listaF, &$4.listaF);
+													passaLista(&$$.listaV, &$4.listaV);}
+	| TermoLogico TOU M_label TermoLogico {iniciaListaVaziaVF(&$$);
+											Correcao(&$1.listaF, $3.label);
+											Junta(&$$.listaV, &$1.listaV, &$4.listaV);
+											passaLista(&$$.listaF, &$4.listaF);}
+	| TermoLogico {passaListaVF(&$$, &$1);}
 	;
-TermoLogico: FatorLogico
-	| TNOT TermoLogico
+TermoLogico: FatorLogico {passaListaVF(&$$,&$1);}
+	| TNOT TermoLogico {passaTrocandoListaVF(&$$, &$2);}
 	;
-FatorLogico: TAPAR ExpressaoLogica TFPAR
-	| ExpressaoRelacional
+FatorLogico: TAPAR ExpressaoLogica TFPAR {passaListaVF(&$$,&$2);}
+	| ExpressaoRelacional {passaListaVF(&$$,&$1);}
 	;
-OperadorLogico: TE
-	| TOU
+
+ExpressaoRelacional:OperadorRelacional {iniciaListaVF(&$$); 
+										empurra(IFCMP, $$); 
+										empurra(GOTO, $$);}
 	;
-ExpressaoRelacional:ExpressaoAritmetica OperadorRelacional ExpressaoAritmetica
-	;
-OperadorRelacional: TMENOR
-	| TMENORIG
-	| TMAIOR
-	| TMAIORIG
-	| TEQUIV
-	| TNOTEQUIV
+OperadorRelacional: ExpressaoAritmetica TMENOR ExpressaoAritmetica {$$.tipo = LT;}
+	| ExpressaoAritmetica            TMENORIG  ExpressaoAritmetica {$$.tipo = LE;}
+	| ExpressaoAritmetica            TMAIOR    ExpressaoAritmetica {$$.tipo = GT;}
+	| ExpressaoAritmetica            TMAIORIG  ExpressaoAritmetica {$$.tipo = GE;}
+	| ExpressaoAritmetica            TEQUIV    ExpressaoAritmetica {$$.tipo = EQ;}
+	| ExpressaoAritmetica            TNOTEQUIV ExpressaoAritmetica {$$.tipo = NE;}
 	;
 ChamadaFuncaoAtrib: TID TAPAR ListaParametros TFPAR
 	| TID TAPAR TFPAR
@@ -131,7 +148,7 @@ TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {empurra(TMUL,$1);}
 	;
 FatorAritmetica: TNUM {empurra(BIPUSH,$1);}
 	| TAPAR ExpressaoAritmetica TFPAR 
-	| TID {$$.TIPO = empurra(ILOAD,$1);}
+	| TID {empurra(ILOAD,$1);}
 	| ChamadaFuncaoAtrib
 	;
 %%

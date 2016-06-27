@@ -296,24 +296,18 @@ int buscaElemento(Lista *l, void *info, int (*compara_info)(void *, void *))
 	return ERRO_ELEMENTO_NAO_ENCONTRADO;
 }
 
-int CopyList(Lista * dest, Lista * source)
-{
-	
-}
-
-int PassList(Lista * dest, Lista * source)
+int passaLista(Lista * dest, Lista * fonte)
 {	
-	if(dest == source)
+	if(dest == fonte)
 	{
-		return ERROR_SAME_LIST;
+		return ERRO_MESMA_LISTA;
 	}
 
-	int node;
+	int no;
 
-	while (!listaVazia(source))
-	{
-		removeDoInicio(source, &node);
-		insereNoFim(dest, &node);
+	while (!listaVazia(fonte)){
+		removeDoInicio(fonte, &no);
+		insereNoFim(dest, &no);
 	}
 	return 1;
 }
@@ -322,7 +316,7 @@ int MergeLists(Lista * dest, Lista * source1, Lista * source2)
 {
 	if(dest == source1 || dest == source2)
 	{
-		return ERROR_SAME_LIST;
+		return ERRO_MESMA_LISTA;
 	}
 
 	int node;
@@ -342,7 +336,7 @@ int MergeLists(Lista * dest, Lista * source1, Lista * source2)
 	return 1;
 }
 
-int SwapLists(Lista * list1, Lista * list2)
+/*int SwapLists(Lista * list1, Lista * list2)
 {
 	if(list1->tamInfo != list2->tamInfo)
 	{
@@ -355,4 +349,4 @@ int SwapLists(Lista * list1, Lista * list2)
 	PassList(backup, list1);
 	PassList(list1, list2);
 	PassList(list2, backup);
-}
+}*/

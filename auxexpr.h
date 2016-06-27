@@ -16,11 +16,16 @@
 #define ISUB      0x0007
 #define IMUL      0x0008
 #define IDIV      0x0009
-#define GETSTATIC 0x0010
-#define ALOAD     0x0011
-#define ASTORE    0x0012
+#define GETSTATIC 0x000A
+#define IFCMP     0x000B
+#define GOTO      0x000C
 
-
+#define LT        0x100A
+#define LE        0x100B
+#define GT        0x100C
+#define GE        0x100D
+#define EQ        0x100E
+#define NE        0x100F
 //STRUCTS
 typedef struct{
     char id[20];
@@ -31,11 +36,15 @@ typedef struct{
     char id[20];
     char literal[256];
     int num;
+    int label;
     Lista IDlista;
+    Lista listaV;
+    Lista listaF;
     int tipo;
 }Atributo;
 typedef struct {
-	int para1;
+	int label; 
+    int para1;
 	int para2;
 	char str[256];
 	int instrucao;
@@ -45,10 +54,20 @@ typedef struct {
 Instrucao codigo[64];
 char bufferSaida[2000];
 int proxInstrucao;
+int proxLabel;
 Lista IDtabela;
 
 //FUNCOES
+int CompararID(void *id1, void *id2);
+void Correcao(Lista *l, int label);
+void iniciaListaVaziaVF(Atributo * item);
+void iniciaListaVF(Atributo *item);
+void passaListaVF(Atributo *dest, Atributo *fonte);
+void passaTrocandoListaVF(Atributo *dest, Atributo *fonte);
+void Junta(Lista *dest, Lista *fonte1, Lista *fonte2);
+int novoLabel();
 void InsereNaTabela (Lista *IDlista, int tipo);
+const char* pegaNomeComparacao(const int comp_tipo);
 void pegaNomeInstrucao(Instrucao codigo, char *instNome);
 void ImprimeInstrucoes();
 void InicializaBytecode();

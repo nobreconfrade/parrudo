@@ -7,7 +7,7 @@
 #define ERRO_LISTA_VAZIA 				0x2002
 #define ERRO_POSICAO_INVALIDA 			0x2003
 #define ERRO_ELEMENTO_NAO_ENCONTRADO 	0x2004
-#define ERROR_SAME_LIST 				0x2005
+#define ERRO_MESMA_LISTA 				0x2005
 #define ERROR_INCOMPATIBLE				0x2006
 
 typedef struct elemento {
@@ -37,8 +37,7 @@ int leNaPosicao(Lista *l, void *info, int pos);
 int limpa_lista(Lista *l);
 int listaVazia(Lista *l);
 int elementoExiste(Lista *l, void *info, int (*compara_info)(void *, void *));
-int CopyList(Lista * dest, Lista * source);
-int PassList(Lista * dest, Lista * source);
+int passaLista(Lista * dest, Lista * fonte);
 int SwapLists(Lista * list1, Lista * list2);
 
 Elemento *aloca_elemento(size_t t, void *info);

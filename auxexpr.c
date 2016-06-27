@@ -4,6 +4,76 @@ int CompararID(void *id1, void *id2){
 	return strcmp(((NaLista*)id1)->id,((NaLista*)id2)->id);
 }
 
+void Correcao(Lista *l, int label){
+	int i;
+	while(!listaVazia(l)){
+		removeDoInicio(l,&i);
+		if(codigo[i].instrucao == GOTO){
+			codigo[i].para1 = label;
+		}else if(codigo[i].instrucao == IFCMP){
+			codigo[i].para2 = label; 
+		}else{
+			codigo[i].label = label;
+		}
+	}
+}
+//FUNCOES LISTAS V e F
+
+void iniciaListaVaziaVF(Atributo * item){
+	InitLista(&item->listaV, sizeof(int));
+	InitLista(&item->listaF, sizeof(int));
+}
+
+void iniciaListaVF(Atributo *item){
+	InitLista(&item->listaV,sizeof(int));
+	InitLista(&item->listaF,sizeof(int));
+	int novaInstrucao = proxInstrucao + 1;
+	insereNoFim(&item->listaV,&proxInstrucao);
+	insereNoFim(&item->listaF,&novaInstrucao);
+}
+
+void passaListaVF(Atributo *dest, Atributo *fonte){
+	Lista *fonteV = &fonte->listaV;
+	Lista *destV = &dest->listaV;
+	InitLista(destV,sizeof(int));
+	passaLista(destV,fonteV);
+	Lista *fonteF 	= &fonte->listaF;
+	Lista *destF 	= &dest->listaF;
+	InitLista(destF, sizeof(int));
+	passaLista(destF, fonteF);
+}
+
+void passaTrocandoListaVF(Atributo *dest, Atributo *fonte){
+	Lista *fonteV = &fonte->listaV;
+	Lista *destF = &dest->listaF;
+	InitLista(destF,sizeof(int));
+	passaLista(destF,fonteV);
+	Lista *fonteF = &fonte->listaF;
+	Lista *destV = &dest->listaV;
+	InitLista(destV, sizeof(int));
+	passaLista(destV, fonteF);	
+}
+
+void Junta(Lista *dest, Lista *fonte1, Lista *fonte2){
+	int no;
+	while(!listaVazia(fonte1)){
+		removeDoInicio(fonte1,&no);
+		insereNoFim(dest,&no);
+	}
+	while(!listaVazia(fonte2)){
+		removeDoInicio(fonte2,&no);
+		insereNoFim(dest,&no);
+	}
+}
+
+//FIM FUNCOES LISTAS V e F
+
+int novoLabel(){
+	proxLabel++;
+	codigo[proxInstrucao].label = proxLabel;
+	return proxLabel;
+}
+
 void InsereNaTabela (Lista *IDlista, int tipo){
 	if(listaVazia(&IDtabela))
 		InitLista(&IDtabela, sizeof(NaLista));
@@ -20,6 +90,34 @@ void InsereNaTabela (Lista *IDlista, int tipo){
 			// printf("-------------------------------------------------------\n");
 		}
 			// printf("-------------------------------------------------------\n");
+	}
+}
+
+const char* pegaNomeComparacao(const int comp_tipo){
+	switch(comp_tipo){
+		case LT:
+			printf("-------------------------------------------------------\n");
+			return "if_icmplt";
+			break;
+		case LE:
+			return "if_icmple";
+			break;
+		case GT:
+			return "if_icmpgt";
+			break;
+		case GE:
+			return "if_icmpge";
+			break;
+		case EQ:
+			return "if_icmpeq";
+			break;
+		case NE:
+			return "if_icmpne";
+			break;
+		default:
+			printf("\nDeu ruim na pegaNomeComparacao\n");
+			return "NADA";
+			break;
 	}
 }
 
@@ -41,9 +139,6 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 			break;
 		case ISTORE:
 			sprintf(str, "\tistore %d\n", codigo.para1);
-			break;
-		case ASTORE:
-			sprintf(str, "\tastore %d\n", codigo.para1);
 			break;
 		case ILOAD:
 			sprintf(str, "\tiload %d\n", codigo.para1);
@@ -71,6 +166,12 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 			else
 				sprintf(str, "\tinvokevirtual java/io/PrintStream/println(I)V\n");
 			// printf("----------------------------%d---------------------------\n",codigo.para2);
+			break;
+		case IFCMP:
+			sprintf(str, "\t%s l%i\n", pegaNomeComparacao(codigo.para1), codigo.para2);
+			// printf("%s\n",str);
+		case GOTO:
+			sprintf(str, "\tgoto l%i\n",codigo.para1);
 			break;
 		default:
 			printf("Well, this is embarrassing...\n");
@@ -155,18 +256,15 @@ void empurra(int instrucao, Atributo param){
 			codigo[proxInstrucao].para2 = INT;
 			// printf("\n\n\n\n%d\n\n\n\n",codigo[proxInstrucao].para1); ou para2
 			break;
-		case ISTORE:
 		case ILOAD:
 			strcpy(aux.id, param.id);
 			buscaElemento(&IDtabela, &aux, CompararID);
 			codigo[proxInstrucao].para1 = aux.pos;
-			break;	
-		case ALOAD:
-		case ASTORE:
+			break;
+		case ISTORE:
 			strcpy(aux.id, param.id);
 			buscaElemento(&IDtabela, &aux, CompararID);
 			codigo[proxInstrucao].para1 = aux.pos;
-			codigo[proxInstrucao].para2 = STRING;
 			break;
 		case LDC:
 			strcpy(codigo[proxInstrucao].str, param.literal);
@@ -183,6 +281,13 @@ void empurra(int instrucao, Atributo param){
 				codigo[proxInstrucao].para1 = INF;
 			else
 				codigo[proxInstrucao].para1 = 0;*/
+			break;
+		case IFCMP:
+			codigo[proxInstrucao].para1 = param.tipo;
+			codigo[proxInstrucao].para2 = param.label;
+			break;
+		case GOTO:
+			codigo[proxInstrucao].para1 = param.label;
 			break;
 		default: // expressoes aritmeticas caem aqui!
 			break;
