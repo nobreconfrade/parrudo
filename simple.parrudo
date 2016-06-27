@@ -2,8 +2,8 @@
 	int a,b;
 	a=0;
 	b=5;
-	if(a<10){
-		b=100;
+	if(a>2 || b<10){
+		a = 200;
 	}
 	print(a);
 	print(b);
