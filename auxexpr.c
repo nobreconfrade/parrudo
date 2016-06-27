@@ -96,7 +96,6 @@ void InsereNaTabela (Lista *IDlista, int tipo){
 const char* pegaNomeComparacao(const int comp_tipo){
 	switch(comp_tipo){
 		case LT:
-			printf("-------------------------------------------------------\n");
 			return "if_icmplt";
 			break;
 		case LE:
@@ -170,6 +169,7 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 		case IFCMP:
 			sprintf(str, "\t%s l%i\n", pegaNomeComparacao(codigo.para1), codigo.para2);
 			// printf("%s\n",str);
+			break;
 		case GOTO:
 			sprintf(str, "\tgoto l%i\n",codigo.para1);
 			break;
@@ -185,6 +185,12 @@ void ImprimeInstrucoes(){
 	int i;
 	for (i = 0; i < proxInstrucao; i++){
 		char instNome[270];
+		if(codigo[i].label != 0)
+		{
+			char labelNome[4];
+			sprintf(labelNome, "l%i:\n", codigo[i].label);
+			EscreveBytecode(labelNome);	
+		}
 		// printf("_____%d______\n",codigo[i].para2);
 		// printf("%s\n",instNome);
 		pegaNomeInstrucao(codigo[i], instNome);
