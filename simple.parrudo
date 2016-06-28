@@ -1,11 +1,14 @@
 {
-	int a;
-	a=10;
-	if(a > 100){
-	a = 2;
+	int a,b;
+	a=1;
+	while(a<=10){
+	a+=1;
+	b=1;
+		while(b<=3){
+			print(a);
+			print(b);
+			b+=1;
+		}
 	}
-	else{
-	a=a*13;
-	}
-	print(a);
+	return 0;
 }

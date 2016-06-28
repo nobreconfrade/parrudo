@@ -6,6 +6,7 @@
 %}
 
 %token 
+TPROVA
 TINCR TDECR
 TADD TMUL TSUB TDIV 
 TMENOR TMENORIG TMAIOR TMAIORIG TEQUIV TNOTEQUIV TIGUAL
@@ -93,8 +94,18 @@ M_label: {$$.label = novoLabel();}
 N_if:{iniciaListaVF(&$$);
 	empurra(GOTO,$$);}
 	;
+
+
+
 CmdAtrib: TID TIGUAL ExpressaoAritmetica TPONTVIRG {empurra(ISTORE,$1);}
-	;
+	| TID TPROVA ExpressaoAritmetica TPONTVIRG {	empurra(ILOAD,$1);
+													empurra(IADD,$1);
+													empurra(ISTORE,$1);}
+	;	
+
+
+
+
 CmdEscrita: TPRINT Flag_Escrita1 TAPAR ExpressaoAritmetica TFPAR Flag_Escrita2 TPONTVIRG
 	| TPRINT Flag_Escrita1 TAPAR String TFPAR Flag_Escrita2 TPONTVIRG
 	;
@@ -154,6 +165,8 @@ TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {empurra(IMUL,$1);}
 FatorAritmetica: TNUM {empurra(BIPUSH,$1);}
 	| TAPAR ExpressaoAritmetica TFPAR 
 	| TID {empurra(ILOAD,$1);}
+	| TPROVA TID
+	| TPROVA TNUM
 	| ChamadaFuncaoAtrib
 	;
 %%

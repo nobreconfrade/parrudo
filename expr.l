@@ -7,6 +7,7 @@ id ([A-Za-z_-])+
 
 %%
 {ws}	{}
+"+=" {return TPROVA;}
 "++" {return TINCR;}
 "--" {return TDECR;}
 
