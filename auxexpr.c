@@ -142,6 +142,12 @@ void pegaNomeInstrucao(Instrucao codigo, char *instNome){
 		case ILOAD:
 			sprintf(str, "\tiload %d\n", codigo.para1);
 			break;
+		case IINCR:
+			sprintf(str, "\ticonst_1\n\tiadd\n");
+			break;
+		case IDECR:
+			sprintf(str, "\ticonst_1\n\tisub\n");
+			break;
 		case IADD:
 			sprintf(str, "\tiadd\n");
 			break;

@@ -19,6 +19,8 @@
 #define GETSTATIC 0x000A
 #define IFCMP     0x000B
 #define GOTO      0x000C
+#define IINCR     0x9000
+#define IDECR     0x9001
 
 #define LT        0x100A
 #define LE        0x100B

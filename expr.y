@@ -6,13 +6,14 @@
 %}
 
 %token 
+TINCR TDECR
 TADD TMUL TSUB TDIV 
 TMENOR TMENORIG TMAIOR TMAIORIG TEQUIV TNOTEQUIV TIGUAL
 TAPAR TFPAR TACHA TFCHA 
 TVIRG TPONTVIRG
 TE TOU TNOT
 TVOID TSTRING TINT
-TRETURN TIF TELSE TWHILE TPRINT TREAD 
+TRETURN TIF TELSE TWHILE TPRINT TREAD TFOR
 TNUM TID TLITERAL 
 
 %%
@@ -63,6 +64,7 @@ ListaCmd: ListaCmd Comando
 	;
 Comando: CmdSe
 	| CmdEnquanto
+	| CmdIncrementa
 	| CmdAtrib
 	| CmdEscrita
 	| CmdLeitura
@@ -82,13 +84,16 @@ CmdEnquanto: TWHILE M_label TAPAR ExpressaoLogica TFPAR M_label Bloco{	empurra(G
 																		Correcao(&$4.listaV, $6.label);
 																		Correcao(&$4.listaF, novoLabel());}
 	;
+CmdIncrementa: TID TINCR TPONTVIRG {empurra(ILOAD,$1);
+									empurra(IINCR,$1);
+									empurra(ISTORE,$1);}
+	;
 M_label: {$$.label = novoLabel();}
 	;
 N_if:{iniciaListaVF(&$$);
 	empurra(GOTO,$$);}
 	;
 CmdAtrib: TID TIGUAL ExpressaoAritmetica TPONTVIRG {empurra(ISTORE,$1);}
-	| TID TIGUAL String TPONTVIRG	{empurra(ISTORE,$1);}
 	;
 CmdEscrita: TPRINT Flag_Escrita1 TAPAR ExpressaoAritmetica TFPAR Flag_Escrita2 TPONTVIRG
 	| TPRINT Flag_Escrita1 TAPAR String TFPAR Flag_Escrita2 TPONTVIRG
@@ -142,8 +147,8 @@ ExpressaoAritmetica: ExpressaoAritmetica TADD TermoAritmetica {empurra(IADD,$1);
 	| ExpressaoAritmetica TSUB TermoAritmetica {empurra(ISUB, $1);}
 	| TermoAritmetica
 	;
-TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {empurra(TMUL,$1);}
-	| TermoAritmetica TDIV FatorAritmetica {empurra(TDIV,$1);}
+TermoAritmetica: TermoAritmetica TMUL FatorAritmetica {empurra(IMUL,$1);}
+	| TermoAritmetica TDIV FatorAritmetica {empurra(IDIV,$1);}
 	| FatorAritmetica
 	;
 FatorAritmetica: TNUM {empurra(BIPUSH,$1);}

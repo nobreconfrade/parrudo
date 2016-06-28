@@ -7,6 +7,9 @@ id ([A-Za-z_-])+
 
 %%
 {ws}	{}
+"++" {return TINCR;}
+"--" {return TDECR;}
+
 "+"	{return TADD;}
 "-"	{return TSUB;}
 "*"	{return TMUL;}
@@ -43,6 +46,7 @@ id ([A-Za-z_-])+
 "while" {return TWHILE;}
 "print" {return TPRINT;}
 "read" {return TREAD;}
+"for" {return TFOR;}
 
 {num} {yylval.num = atof(yytext); return TNUM;} 
 {id} {strcpy(yylval.id,yytext); return TID;}
